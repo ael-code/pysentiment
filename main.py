@@ -32,7 +32,7 @@ def analyze_text_sentiment(nlu, text):
 
 
 @click.command()
-@click.option('--cred-file',
+@click.option('-c', '--cred-file',
         type=click.Path(exists=True, dir_okay=False, readable=True),
         help="file from which load credential (BLUEMIX json format)")
 @click.option('--user')
