@@ -37,8 +37,12 @@ def analyze_text_sentiment(nlu, text):
         help="file from which load credential (BLUEMIX json format)")
 @click.option('--user')
 @click.option('--password')
+@click.option('-v', '--verbose', is_flag=True)
 @click.argument('data', envvar='DATA')
-def main(cred_file, user, password, data):
+def main(cred_file, user, password, verbose, data):
+
+    if verbose:
+        logging.basicConfig(level=logging.DEBUG)
 
     if cred_file:
         logging.debug("Loading credentials from file '{}'".format(cred_file))
