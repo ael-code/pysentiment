@@ -9,7 +9,7 @@ import watson_developer_cloud.natural_language_understanding.features.v1 as \
     features
 
 
-env_prefix = "NLU_"
+env_prefix = "NLU"
 api_version = '2017-02-27',
 
 user = None
