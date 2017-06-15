@@ -24,10 +24,20 @@ def load_credentials_from_file(cred_file):
     return cred_json['username'], cred_json['password']
 
 
+def analyze_file_sentiment(nlu, file_path, f_output):
+    count = 0
+    with open(file_path, 'r') as f:
+        for line in f:
+            score = analyze_text_sentiment(nlu, line)
+            f_output.write(str(score) + "\n")
+            count += 1
+    return count
+
 def analyze_text_sentiment(nlu, text):
     response = nlu.analyze(
         text=text,
         features=[features.Sentiment()])
+    # logging.debug(json.dumps(response))
     return response['sentiment']['document']['score']
 
 
@@ -61,7 +71,15 @@ def main(cred_file, user, password, verbose, data):
 
     if os.path.exists(data):
         logging.debug("Treating input data as a file system path")
-        raise NotImplemented()
+        if os.path.isfile(data):
+            logging.info("Analyzing file: '{}'".format(data))
+            with open(data + ".watson", 'w') as output:
+                count = analyze_file_sentiment(nlu, data, output)
+            click.secho("Correctly analyzed {} phrases".format(count), fg="green")
+        else:
+            # is a folder
+            raise NotImplemented("Cannot handle folders yet, only files")
+
     else:
         try:
             print("score: {}".format(analyze_text_sentiment(nlu, data)))
